@@ -24,9 +24,9 @@ function detectSwipe() {
         // Horizontal swipe
         if (Math.abs(deltaX) > threshold) {
             if (deltaX > 0) {
-                return 'ArrowLeft'
-            } else {
                 return 'ArrowRight'
+            } else {
+                return 'ArrowLeft'
             }
         }
     } else {
