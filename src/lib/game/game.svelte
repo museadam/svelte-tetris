@@ -22,6 +22,9 @@
 
 	let board = $state(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
 	let currentPiece: Piece | null = $state(null);
+	// $inspect(currentPiece);
+	// $inspect(board);
+
 	let gameOver = $state(false);
 	let score = $state(0);
 
@@ -55,7 +58,7 @@
 	function lockPiece() {
 		if (!currentPiece) return;
 
-		const newBoard = board.map((row) => [...row]);
+		const newBoard = $state.snapshot(board.map((row) => [...row]));
 
 		for (let row = 0; row < currentPiece.shape.length; row++) {
 			for (let col = 0; col < currentPiece.shape[row].length; col++) {
@@ -189,7 +192,11 @@
 					{#each row as cell, colIndex}
 						<div
 							class="cell"
-							style:background-color={cell || 'transparent'}
+							style={currentPiece?.shape[rowIndex - currentPiece?.y]?.[
+								colIndex - currentPiece.x
+							] === 1
+								? `background-color: ${currentPiece.color}`
+								: `background-color: ${cell}`}
 							class:current-piece={currentPiece &&
 								currentPiece.shape[rowIndex - currentPiece.y]?.[colIndex - currentPiece.x] === 1}
 						></div>
