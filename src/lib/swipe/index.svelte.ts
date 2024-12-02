@@ -6,11 +6,15 @@ let touchEndY = $state(0);
 const threshold = 50; // Minimum distance for a swipe to be considered
 
 export function handleTouchStart(event) {
+    event.preventDefault()
+
     touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
 }
 
 export function handleTouchEnd(event) {
+    event.preventDefault()
+
     touchEndX = event.changedTouches[0].clientX;
     touchEndY = event.changedTouches[0].clientY;
     return detectSwipe();

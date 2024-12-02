@@ -260,6 +260,9 @@
 	:global(body) {
 		background-color: #f0f0f0;
 	}
+	:global(html) {
+		overscroll-behavior: contain;
+	}
 	.tetris-container {
 		display: flex;
 		flex-direction: column;
