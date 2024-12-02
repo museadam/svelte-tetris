@@ -13,25 +13,25 @@
 
 <button
 	class="
-m-1
-transform
-rounded-lg
-bg-blue-600
-px-2
-py-1
-font-bold
-text-white
-shadow-lg
-transition-all
-duration-300
-ease-in-out
-hover:scale-105
-hover:bg-blue-700
-focus:outline-none
-focus:ring-2
-focus:ring-blue-500
-focus:ring-opacity-50
-active:scale-95
+			m-1
+			transform
+			rounded-lg
+			bg-blue-600
+			px-2
+			py-1
+			font-bold
+			text-white
+			shadow-lg
+			transition-all
+			duration-300
+			ease-in-out
+			hover:scale-105
+			hover:bg-blue-700
+			focus:outline-none
+			focus:ring-2
+			focus:ring-blue-500
+			focus:ring-opacity-50
+			active:scale-95
 "
 	onclick={openControls}>Game Controls</button
 >

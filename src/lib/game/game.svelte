@@ -142,7 +142,7 @@
 	let dropInterval = $state();
 	function startGame() {
 		currentPiece = spawnNewPiece();
-
+		buttonName = 'Reset Game';
 		dropInterval = setInterval(movePieceDown, 1000);
 
 		window.addEventListener('keydown', handleKeydown);
@@ -156,9 +156,7 @@
 		};
 	});
 	let buttonName = $state('Start Game');
-	$effect(() => {
-		if (gameOver) buttonName = 'Reset Game';
-	});
+
 	function restartGame() {
 		board = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
 		currentPiece = null;
@@ -183,7 +181,28 @@
 		<div class="game-over">
 			<h2>Game Over!</h2>
 			<p>Score: {score}</p>
-			<button onclick={restartGame}>Restart Game</button>
+			<button
+				class="m-1
+						transform
+						rounded-lg
+						bg-green-600
+						px-2
+						py-1
+						font-bold
+						text-white
+						shadow-lg
+						transition-all
+						duration-300
+						ease-in-out
+						hover:scale-105
+						hover:bg-green-700
+						focus:outline-none
+						focus:ring-2
+						focus:ring-green-500
+						focus:ring-opacity-50
+						active:scale-95"
+				onclick={restartGame}>Play again?</button
+			>
 		</div>
 	{:else}
 		<div class="game-board">
@@ -228,7 +247,7 @@
 						active:scale-95
 						"
 				onclick={() => {
-					if (!gameOver) startGame();
+					if (!currentPiece) startGame();
 					else restartGame();
 				}}>{buttonName}</button
 			>
