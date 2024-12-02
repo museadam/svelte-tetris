@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { isValidMove, spawnNewPiece, type Piece } from './game';
+	import { handleTouchStart, handleTouchEnd } from '../swipe/index.svelte';
+	import Info from './info.svelte';
+
 	const COLS = 10;
 	const ROWS = 20;
 
@@ -162,6 +165,16 @@
 	}
 </script>
 
+<div
+	class="swipe-background"
+	role="button"
+	tabindex="0"
+	ontouchstart={handleTouchStart}
+	ontouchend={(e) => {
+		const ret = handleTouchEnd(e);
+		handleKeydown({ key: ret });
+	}}
+></div>
 <div class="tetris-container">
 	{#if gameOver}
 		<div class="game-over">
@@ -188,25 +201,25 @@
 			<p>Score: {score}</p>
 			<button
 				class="
-transform
-rounded-lg
-bg-green-600
-px-6
-py-3
-font-bold
-text-white
-shadow-lg
-transition-all
-duration-300
-ease-in-out
-hover:scale-105
-hover:bg-green-700
-focus:outline-none
-focus:ring-2
-focus:ring-green-500
-focus:ring-opacity-50
-active:scale-95
-"
+						transform
+						rounded-lg
+						bg-green-600
+						px-6
+						py-3
+						font-bold
+						text-white
+						shadow-lg
+						transition-all
+						duration-300
+						ease-in-out
+						hover:scale-105
+						hover:bg-green-700
+						focus:outline-none
+						focus:ring-2
+						focus:ring-green-500
+						focus:ring-opacity-50
+						active:scale-95
+						"
 				onclick={() => {
 					if (!gameOver) startGame();
 					else restartGame();
@@ -214,6 +227,7 @@ active:scale-95
 			>
 		</div>
 	{/if}
+	<Info />
 </div>
 
 <style>
@@ -254,5 +268,12 @@ active:scale-95
 		text-align: center;
 		padding: 20px;
 		background-color: rgba(255, 0, 0, 0.1);
+	}
+	.swipe-background {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 </style>
