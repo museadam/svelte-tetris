@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import { isValidMove, spawnNewPiece, rotatePiece, type Piece } from './game';
 	import { handleTouchStart, handleTouchEnd } from '../swipe/index.svelte';
 	import Info from './info.svelte';
