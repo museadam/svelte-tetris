@@ -171,7 +171,7 @@
 	role="button"
 	tabindex="0"
 	ontouchstart={handleTouchStart}
-	ontouchend={(e) => {
+	ontouchmove={(e) => {
 		const ret = handleTouchEnd(e);
 		handleKeydown({ key: ret });
 	}}
