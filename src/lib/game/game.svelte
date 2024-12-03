@@ -140,6 +140,7 @@
 		}
 	}
 	let dropInterval = $state();
+
 	function startGame() {
 		currentPiece = spawnNewPiece();
 		buttonName = 'Reset Game';
@@ -164,6 +165,11 @@
 		score = 0;
 		startGame();
 	}
+	let isOn = $state(false);
+
+	const toggleSwitch = () => {
+		isOn = !isOn;
+	};
 </script>
 
 <div
@@ -172,8 +178,16 @@
 	tabindex="0"
 	ontouchstart={handleTouchStart}
 	ontouchmove={(e) => {
-		const ret = handleTouchEnd(e);
-		handleKeydown({ key: ret });
+		if (isOn) {
+			const ret = handleTouchEnd(e);
+			handleKeydown({ key: ret });
+		}
+	}}
+	ontouchend={(e) => {
+		if (!isOn) {
+			const ret = handleTouchEnd(e);
+			handleKeydown({ key: ret });
+		}
 	}}
 ></div>
 <div class="tetris-container">
@@ -182,25 +196,8 @@
 			<h2>Game Over!</h2>
 			<p>Score: {score}</p>
 			<button
-				class="m-1
-						transform
-						rounded-lg
-						bg-green-600
-						px-2
-						py-1
-						font-bold
-						text-white
-						shadow-lg
-						transition-all
-						duration-300
-						ease-in-out
-						hover:scale-105
-						hover:bg-green-700
-						focus:outline-none
-						focus:ring-2
-						focus:ring-green-500
-						focus:ring-opacity-50
-						active:scale-95"
+				class="main-btn bg-green-600
+    hover:bg-green-700"
 				onclick={restartGame}>Play again?</button
 			>
 		</div>
@@ -227,24 +224,10 @@
 			<p>Score: {score}</p>
 			<button
 				class="
-						transform
-						rounded-lg
+				main-btn
 						bg-green-600
-						px-6
-						py-3
-						font-bold
-						text-white
-						shadow-lg
-						transition-all
-						duration-300
-						ease-in-out
-						hover:scale-105
-						hover:bg-green-700
-						focus:outline-none
-						focus:ring-2
-						focus:ring-green-500
-						focus:ring-opacity-50
-						active:scale-95
+    hover:bg-green-700
+
 						"
 				onclick={() => {
 					if (!currentPiece) startGame();
@@ -253,6 +236,27 @@
 			>
 		</div>
 	{/if}
+
+	<div
+		role="button"
+		tabindex="0"
+		class="flex cursor-pointer items-center space-x-4 md:hidden"
+		onclick={toggleSwitch}
+		onkeydown={(e) => console.log()}
+	>
+		<div
+			class={`flex h-6 w-12 items-center rounded-full p-1 transition-colors duration-300 ${
+				isOn ? 'bg-green-500' : 'bg-gray-300'
+			}`}
+		>
+			<div
+				class={`h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
+					isOn ? 'translate-x-6 border-2 border-green-500' : 'translate-x-0 border border-gray-300'
+				}`}
+			></div>
+		</div>
+		<span class="text-sm font-medium">{isOn ? 'Hold Swipe' : 'Tap Swipe'}</span>
+	</div>
 	<Info />
 </div>
 
@@ -272,18 +276,18 @@
 
 	.game-board {
 		display: grid;
-		grid-template-rows: repeat(20, 30px);
+		grid-template-rows: repeat(20, var(--sq-size));
 		border: 2px solid #333;
 	}
 
 	.row {
 		display: grid;
-		grid-template-columns: repeat(10, 30px);
+		grid-template-columns: repeat(10, var(--sq-size));
 	}
 
 	.cell {
-		width: 30px;
-		height: 30px;
+		width: var(--sq-size);
+		height: var(--sq-size);
 		border: 1px solid rgba(0, 0, 0, 0.1);
 		transition: background-color 0.2s;
 	}

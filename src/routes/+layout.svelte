@@ -14,6 +14,7 @@
 		overflow: hidden;
 		min-height: 100vh;
 		margin: 0;
+		--sq-size: 24px;
 	}
 	main {
 		flex: 1;
