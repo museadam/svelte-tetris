@@ -177,10 +177,8 @@
 	role="button"
 	tabindex="0"
 	ontouchstart={handleTouchStart}
-	onclick={(e) => {
-		if (isOn) {
-			handleKeydown({ key: 'ArrowUp' });
-		}
+	onclick={() => {
+		handleKeydown({ key: 'ArrowUp' });
 	}}
 	onkeydown={(e) => console.log()}
 	ontouchmove={(e) => {

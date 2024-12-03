@@ -38,7 +38,7 @@
 			<strong>Down Arrow ↓ or Swipe down</strong>: Move piece down faster
 		</div>
 		<div>
-			<strong>Up Arrow ↑ or Swipe up</strong>: Rotate piece
+			<strong>Up Arrow ↑ or Swipe up or Left click</strong>: Rotate piece
 		</div>
 	</div>
 

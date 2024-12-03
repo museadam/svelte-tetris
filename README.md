@@ -1,3 +1,5 @@
-# svelte-tetris.vercel.app
+# Demo
 
-Basic implementation of tetris... curretly no levels or speed progression
+[demo](https://svelte-tetris-phi.vercel.app)
+
+Basic implementation of Tetris... currently no levels or speed progression
