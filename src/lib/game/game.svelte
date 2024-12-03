@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { isValidMove, spawnNewPiece, type Piece } from './game';
 	import { handleTouchStart, handleTouchEnd } from '../swipe/index.svelte';
 	import Info from './info.svelte';
@@ -121,7 +121,7 @@
 		board = newBoard;
 		score += linesCleared * 100;
 	}
-	function handleKeydown(e: KeyboardEvent) {
+	function handleKeydown(e: KeyboardEvent | { key: string }) {
 		if (gameOver) return;
 
 		switch (e.key) {
@@ -139,7 +139,7 @@
 				break;
 		}
 	}
-	let dropInterval = $state();
+	let dropInterval = $state(0);
 
 	function startGame() {
 		currentPiece = spawnNewPiece();
@@ -177,6 +177,12 @@
 	role="button"
 	tabindex="0"
 	ontouchstart={handleTouchStart}
+	onclick={(e) => {
+		if (isOn) {
+			handleKeydown({ key: 'ArrowUp' });
+		}
+	}}
+	onkeydown={(e) => console.log()}
 	ontouchmove={(e) => {
 		if (isOn) {
 			const ret = handleTouchEnd(e);

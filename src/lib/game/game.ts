@@ -73,10 +73,31 @@ const PIECES = [
     },
     {
         shape: [
+            [1, 1, 0],
+            [0, 1, 1]
+        ],
+        color: 'red'
+    },
+    {
+        shape: [
             [1, 0, 0],
             [1, 1, 1]
         ],
         color: 'blue'
+    },
+    {
+        shape: [
+            [0, 0, 1],
+            [1, 1, 1]
+        ],
+        color: 'orange'
+    },
+    {
+        shape: [
+            [1, 1, 1],
+            [0, 1, 0]
+        ],
+        color: 'purple'
     }
 ];
 
