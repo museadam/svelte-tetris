@@ -6,7 +6,7 @@ export type Piece = {
 };
 
 const COLS = 10;
-// const ROWS = 20;
+const ROWS = 20;
 
 export function isValidMove(board: (string | null)[][], piece: Piece): boolean {
     for (let row = 0; row < piece.shape.length; row++) {
@@ -37,6 +37,29 @@ export function isValidMove(board: (string | null)[][], piece: Piece): boolean {
         }
     }
     return true;
+}
+
+export function clearLines(board: (string | null)[][], level: number, score: number) {
+    let linesCleared = 0;
+
+    const newBoard = board.filter((row) => {
+        const isComplete = row.every((cell) => cell !== null);
+        if (isComplete) {
+            linesCleared++;
+            return false;
+        }
+        return true;
+    });
+
+    while (newBoard.length < ROWS) {
+        newBoard.unshift(Array(COLS).fill(null));
+    }
+
+    // Update board and score
+    board = newBoard;
+    level = level + 1
+
+    score += linesCleared * 100;
 }
 
 export function rotatePiece(piece: Piece): Piece {

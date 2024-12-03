@@ -1,32 +1,21 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { isValidMove, spawnNewPiece, type Piece } from './game';
+	import { isValidMove, spawnNewPiece, rotatePiece, type Piece } from './game';
 	import { handleTouchStart, handleTouchEnd } from '../swipe/index.svelte';
 	import Info from './info.svelte';
 
 	const COLS = 10;
 	const ROWS = 20;
 
-	function rotatePiece(piece: Piece): Piece {
-		const rotatedShape = piece.shape[0].map((_, index) =>
-			piece.shape.map((row) => row[index]).reverse()
-		);
-
-		const rotatedPiece = {
-			...piece,
-			shape: rotatedShape
-		};
-
-		return rotatedPiece;
-	}
-
 	let board = $state(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
 	let currentPiece: Piece | null = $state(null);
+	let score = $state(0);
+	let level = $derived(Math.trunc(score / 1000) === 0 ? 1 : Math.trunc(score / 1000) + 1);
+	let gameSpeed = $derived(1000 - level * 25);
 	// $inspect(currentPiece);
 	// $inspect(board);
 
 	let gameOver = $state(false);
-	let score = $state(0);
 
 	function movePieceLeft() {
 		if (!currentPiece) return;
@@ -58,7 +47,7 @@
 	function lockPiece() {
 		if (!currentPiece) return;
 
-		const newBoard = $state.snapshot(board.map((row) => [...row]));
+		const newBoard = board.map((row) => [...row]);
 
 		for (let row = 0; row < currentPiece.shape.length; row++) {
 			for (let col = 0; col < currentPiece.shape[row].length; col++) {
@@ -81,26 +70,12 @@
 		board = newBoard;
 
 		clearLines();
-
 		currentPiece = spawnNewPiece();
 
 		if (!isValidMove(board, currentPiece)) {
 			gameOver = true;
 		}
 	}
-
-	function movePieceDown() {
-		if (!currentPiece) return;
-
-		const newPiece = { ...currentPiece, y: currentPiece.y + 1 };
-
-		if (isValidMove(board, newPiece)) {
-			currentPiece = newPiece;
-		} else {
-			lockPiece();
-		}
-	}
-
 	function clearLines() {
 		let linesCleared = 0;
 
@@ -119,8 +94,22 @@
 
 		// Update board and score
 		board = newBoard;
+
 		score += linesCleared * 100;
 	}
+
+	function movePieceDown() {
+		if (!currentPiece) return;
+
+		const newPiece = { ...currentPiece, y: currentPiece.y + 1 };
+
+		if (isValidMove(board, newPiece)) {
+			currentPiece = newPiece;
+		} else {
+			lockPiece();
+		}
+	}
+
 	function handleKeydown(e: KeyboardEvent | { key: string }) {
 		if (gameOver) return;
 
@@ -144,7 +133,7 @@
 	function startGame() {
 		currentPiece = spawnNewPiece();
 		buttonName = 'Reset Game';
-		dropInterval = setInterval(movePieceDown, 1000);
+		dropInterval = setInterval(movePieceDown, gameSpeed);
 
 		window.addEventListener('keydown', handleKeydown);
 	}
@@ -206,6 +195,7 @@
 			>
 		</div>
 	{:else}
+		<p>level: {level}</p>
 		<div class="game-board">
 			{#each board as row, rowIndex}
 				<div class="row">
@@ -239,28 +229,31 @@
 				}}>{buttonName}</button
 			>
 		</div>
-	{/if}
 
-	<div
-		role="button"
-		tabindex="0"
-		class="flex cursor-pointer items-center space-x-4 md:hidden"
-		onclick={toggleSwitch}
-		onkeydown={(e) => console.log()}
-	>
 		<div
-			class={`flex h-6 w-12 items-center rounded-full p-1 transition-colors duration-300 ${
-				isOn ? 'bg-green-500' : 'bg-gray-300'
-			}`}
+			role="button"
+			tabindex="0"
+			class="flex cursor-pointer items-center space-x-4 md:hidden"
+			onclick={toggleSwitch}
+			onkeydown={(e) => e}
 		>
 			<div
-				class={`h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
-					isOn ? 'translate-x-6 border-2 border-green-500' : 'translate-x-0 border border-gray-300'
+				class={`flex h-6 w-12 items-center rounded-full p-1 transition-colors duration-300 ${
+					isOn ? 'bg-green-500' : 'bg-gray-300'
 				}`}
-			></div>
+			>
+				<div
+					class={`h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
+						isOn
+							? 'translate-x-6 border-2 border-green-500'
+							: 'translate-x-0 border border-gray-300'
+					}`}
+				></div>
+			</div>
+			<span class="text-sm font-medium">{isOn ? 'Hold Swipe' : 'Basic Swipe'}</span>
 		</div>
-		<span class="text-sm font-medium">{isOn ? 'Hold Swipe' : 'Tap Swipe'}</span>
-	</div>
+	{/if}
+
 	<Info />
 </div>
 
